@@ -1,10 +1,16 @@
 from models import Student
-
+import re
 
 class StudentManger:
 
     def __init__(self):
         self.students = []
+
+    def number_verify(self,number):
+        result = re.search(r"^[1-9][0-9]{7}$",number)
+        if result:
+            return True
+        return False
 
     def add_student(self, student):
         for stu in self.students:
@@ -12,8 +18,9 @@ class StudentManger:
             if stu.number == student.number:
                 # return 会直接结束语句
                 return False
-        self.students.append(student)
-        return True
+        if self.number_verify(student.number):
+            self.students.append(student)
+            return True
 
     def search_student(self, number):
         for stu in self.students:
@@ -29,14 +36,27 @@ class StudentManger:
             return True
         return False
 
-    def change_stu_name(self, number):
-        pass
+    def change_stu_name(self, number,new_name):
+        result = self.search_student(number)
+        if result is not None and new_name is not None :
+            result.name = new_name
+            return True
+        return False
 
-    def change_stu_number(self, number):
-        pass
+    def change_stu_number(self, number,new_number):
+        result = self.search_student(number)
+        result2 = self.search_student(new_number)
+        if result is not None  and result2 is None and self.number_verify(new_number):
+            result.number = new_number
+            return True
+        return False
 
-    def change_stu_sex(self, number):
-        pass
+    def change_stu_sex(self, number,new_sex):
+        result = self.search_student(number)
+        if result is not None and new_sex in ("男","女") :
+            result.sex = new_sex
+            return True
+        return False
 
     def change_stu_score(self, number, new_score):
         result = self.search_student(number)
@@ -47,17 +67,5 @@ class StudentManger:
         return False
 
 
-stu1 = Student("张三", "20260001", "男", 95)
-stu2 = Student("李四", "20260001", "女", 59)
-manager = StudentManger()
-manager.add_student(stu1)
-result3 = manager.change_stu_score("20260001", 99)
-print(result3)
 
-# manager.add_student(stu2)
-# result = manager.search_student("20260001")
-# if result is not None:
-#     print(result.to_row())
-# result2 = manager.del_student("20260001")
-# print(result2)
-# print(len(manager.students))
+
