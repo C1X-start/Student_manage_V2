@@ -36,6 +36,20 @@ class StudentManger:
             return True
         return False
 
+    def change_student(self,number,choice,new_value):
+        match choice:
+            case 1:
+                self.change_stu_name(number,new_value)
+            case 2:
+                self.change_stu_number(number,new_value)
+            case 3:
+                self.change_stu_sex(number,new_value)
+            case 4:
+                self.change_stu_score(number,new_value)
+
+
+
+        
     def change_stu_name(self, number,new_name):
         result = self.search_student(number)
         if result is not None and new_name is not None :
